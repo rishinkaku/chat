@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login
 
-class JWSAuthMiddleware:
+class JWTAuthMiddleware:
     def __init__(self,get_response):
         self.get_response=get_response
 
@@ -9,5 +9,6 @@ class JWSAuthMiddleware:
             token=request.headers['Authorization'].split(" ")[1]
             user = authenticate(request, token=token)
             if user is not None:
-                login(request, user)
+                request.user=user
+            print(user,request.user)
         return self.get_response(request)
